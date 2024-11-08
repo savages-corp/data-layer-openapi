@@ -1,14 +1,24 @@
-# European Financial Data Layer (EFDL) OpenAPI specifications
+# European Financial Data Layer (EFDL) OpenAPI
 
-This repository contains the OpenAPI specifications for the European Financial Data Layer (EFDL) integrations.
+EFDL acts as an intermediary data layer that facilitates the pulling and pushing of data between different sources and destinations, such as CRM systems like Salesforce and HubSpot, as well as custom internal systems.
 
-## EFDL Generic HTTP Service API
+The core concepts of EFDL are:
 
-### Overview
+- **Deterministic Data Flow**: EFDL ensures that data flows in a deterministic manner, maintaining consistency and integrity across different systems.
 
-The EFDL Generic HTTP Service API is a crucial component of the EFDL (European Financial Data Layer) system, designed to streamline data synchronization across various services. EFDL acts as an intermediary data layer that facilitates the pulling and pushing of data between different sources and destinations, such as CRM systems like Salesforce and HubSpot, as well as custom internal systems.
+- **Error Handling**: EFDL halts data flow in case of errors, ensuring that data is not lost or corrupted during synchronization.
 
-### Goals
+- **Data Normalization**: EFDL comes with predefined data models that represent common entities such as accounts, contracts, claims, and financial transactions.
+
+- **Data Warehouse**: EFDL has the capability to store normalized data in a data warehouse layer, creating a single source of truth for data across different systems.
+
+- **Connectors**: EFDL provides pre-built connectors to popular services, allowing customers to easily integrate various systems.
+
+A service in EFDL is a logical entity that represents a data source or destination. Services can be external systems like Salesforce or internal systems like a custom CRM. A service provides pulling and pushing capabilities for data, allowing EFDL to synchronize data between different services seamlessly.
+
+The **EFDL Generic HTTP Service** is a crucial component of the EFDL system, designed to allow customers and integration partners to set up their own HTTP servers that EFDL can connect to. This enables data exchange between EFDL and internal systems, providing a flexible and customizable solution for data synchronization.
+
+## Goals
 
 The primary goals of this API specification are:
 
@@ -20,7 +30,7 @@ The primary goals of this API specification are:
 
 4. **Customization**: Allow customers to set up their own HTTP servers using this specification, offering granular control over data exposure and integration with EFDL.
 
-### Key Features
+## Key Features
 
 - **Service Integration**: EFDL provides basic implementations for popular services such as Salesforce. It also supports custom integrations for unique customer environments.
 
@@ -30,7 +40,7 @@ The primary goals of this API specification are:
 
 - **Data Mapping**: EFDL allows customers to map data fields between different services, ensuring that data is correctly aligned and synchronized in a meaningful way, even across disparate systems.
 
-### API Structure
+## API Structure
 
 The API is structured around the following key resources:
 
@@ -39,29 +49,29 @@ The API is structured around the following key resources:
 - **Claims**: Process insurance claims, tracking details from filing to resolution.
 - **Financial Transactions**: Record and retrieve financial transactions related to accounts.
 
-### Endpoints
+## Endpoints
 
-#### Accounts
+### Accounts
 
 - `GET /accounts`: Retrieve a list of accounts.
 - `POST /accounts`: Upsert (create or update) an account.
 
-#### Contracts
+### Contracts
 
 - `GET /contracts`: Retrieve a list of contracts.
 - `POST /contracts`: Upsert (create or update) a contract.
 
-#### Claims
+### Claims
 
 - `GET /claims`: Retrieve a list of claims.
 - `POST /claims`: Upsert (create or update) a claim.
 
-#### Transactions
+### Transactions
 
 - `GET /transactions`: Retrieve a list of financial transactions.
 - `POST /transactions`: Upsert (create or update) a transaction.
 
-### Error Handling
+## Error Handling
 
 The API provides detailed error messages and uses standard HTTP status codes to indicate the success or failure of an operation. Common statuses include:
 
@@ -70,7 +80,7 @@ The API provides detailed error messages and uses standard HTTP status codes to 
 - `400 Bad Request`: Invalid request parameters or data.
 - `500 Internal Server Error`: An unexpected error occurred on the server.
 
-### Contact
+## Contact
 
 For more information or support, please contact:
 
