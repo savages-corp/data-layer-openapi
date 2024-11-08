@@ -1,0 +1,914 @@
+openapi: 3.0.3
+info:
+  title: EFDL Generic HTTP Service
+  version: 1.2.5
+  description: >
+    API for EFDL HTTP Service which pulls and pushes accounts, cases, claims, contracts, and financial transactions.
+  contact:
+    name: Andrew Lake
+    email: a.lake@savagescorp.com
+servers:
+  - url: https://mock_46065c8968b344568842adfc32f51904.mock.insomnia.rest
+tags:
+  - name: Accounts
+    description: Operations related to accounts.
+  - name: Claims
+    description: Operations related to claims.
+  - name: Contracts
+    description: Operations related to contracts.
+  - name: Transactions
+    description: Operations related to financial transactions.
+paths:
+  /accounts:
+    get:
+      summary: Get Accounts
+      description: >
+        Retrieve a list of accounts within a date or ID range. If startDate or startId is not specified,
+        retrieval starts from the first entry. If endDate is not specified, retrieval continues to the latest entry.
+      operationId: getAccounts
+      tags:
+        - Accounts
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date for filtering accounts (RFC 3339 format). Retrieves from the first entry if not specified.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          description: End date for filtering accounts (RFC 3339 format). Retrieves to the latest entry if not specified.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: startId
+          in: query
+          description: Starting integer identifier for pulling accounts. Retrieves from the first entry if not specified.
+          required: false
+          schema:
+            type: integer
+        - name: endId
+          in: query
+          description: Ending integer identifier for pulling accounts. Retrieves to the latest entry if not specified.
+          required: false
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Maximum number of accounts to return.
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful retrieval of accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Account"
+        "400":
+          description: Failed to retrieve accounts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Unexpected internal server error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Upsert Account
+      description: Create or update an account.
+      operationId: upsertAccount
+      tags:
+        - Accounts
+      requestBody:
+        description: Account to be created or updated
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Account"
+      responses:
+        "200":
+          description: Account successfully pushed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+        "201":
+          description: Account successfully pushed and a new record was created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+        "400":
+          description: Failed to upsert account
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Unexpected internal server error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /claims:
+    get:
+      summary: Get Claims
+      description: Retrieve a list of claims.
+      operationId: getClaims
+      tags:
+        - Claims
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date for filtering claims (RFC 3339 format).
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          description: End date for filtering claims (RFC 3339 format).
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: startId
+          in: query
+          description: Starting identifier for filtering claims.
+          required: false
+          schema:
+            type: string
+        - name: endId
+          in: query
+          description: Ending identifier for filtering claims.
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Maximum number of claims to return.
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful retrieval of claims
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Claim"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Unexpected internal server error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Upsert Claim
+      description: Create or update a claim.
+      operationId: upsertClaim
+      tags:
+        - Claims
+      requestBody:
+        description: Claim to be created or updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Claim"
+      responses:
+        "200":
+          description: Claim successfully created or updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Claim"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Unexpected internal server error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+                
+  /contracts:
+    get:
+      summary: Get Contracts
+      description: >
+        Retrieve a list of contracts within a date or ID range. If startDate or startId is not specified,
+        retrieval starts from the first entry. If endDate is not specified, retrieval continues to the latest entry.
+      operationId: getContracts
+      tags:
+        - Contracts
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date for filtering contracts (RFC 3339 format). Retrieves from the first entry if not specified.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          description: End date for filtering contracts (RFC 3339 format). Retrieves to the latest entry if not specified.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: startId
+          in: query
+          description: Starting integer identifier for pulling contracts. Retrieves from the first entry if not specified.
+          required: false
+          schema:
+            type: integer
+        - name: endId
+          in: query
+          description: Ending integer identifier for pulling contracts. Retrieves to the latest entry if not specified.
+          required: false
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Maximum number of contracts to return.
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful retrieval of contracts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Contract"
+        "400":
+          description: Failed to retrieve contracts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Unexpected internal server error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Upsert Contract
+      description: Create or update a contract.
+      operationId: upsertContract
+      tags:
+        - Contracts
+      requestBody:
+        description: Contract to be created or updated
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Contract"
+      responses:
+        "200":
+          description: Contract successfully pushed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contract"
+        "201":
+          description: Contract successfully pushed and a new record was created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contract"
+        "400":
+          description: Failed to upsert contract
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Unexpected internal server error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /transactions:
+    get:
+      summary: Get Transactions
+      description: Retrieve a list of financial transactions.
+      operationId: getTransactions
+      tags:
+        - Transactions
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date for filtering transactions (RFC 3339 format).
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          description: End date for filtering transactions (RFC 3339 format).
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: startId
+          in: query
+          description: Starting identifier for filtering transactions.
+          required: false
+          schema:
+            type: string
+        - name: endId
+          in: query
+          description: Ending identifier for filtering transactions.
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Maximum number of transactions to return.
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful retrieval of transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FinancialTransaction"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Unexpected internal server error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Upsert Transaction
+      description: Create or update a financial transaction.
+      operationId: upsertTransaction
+      tags:
+        - Transactions
+      requestBody:
+        description: Transaction to be created or updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FinancialTransaction"
+      responses:
+        "200":
+          description: Transaction successfully created or updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FinancialTransaction"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Unexpected internal server error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+
+components:
+  schemas:
+    Error:
+      type: object
+      description: API error body
+      properties:
+        message:
+          type: string
+          description: Reason for the error
+    Address:
+      nullable: true
+      type: object
+      description: Postal address for an account.
+      properties:
+        number:
+          nullable: true
+          type: string
+          description: House Number
+        street:
+          nullable: true
+          type: string
+          description: Street address
+        city:
+          nullable: true
+          type: string
+          description: City
+        state:
+          nullable: true
+          type: string
+          description: State or province
+        postal_code:
+          nullable: true
+          type: string
+          description: Postal code
+        country:
+          nullable: true
+          type: string
+          description: Country
+    PaymentMethodSepa:
+      type: object
+      description: SEPA payment details.
+      properties:
+        bank:
+          type: string
+          description: The name of the bank.
+        bic:
+          type: string
+          description: The Bank Identifier Code.
+        iban:
+          type: string
+          description: The International Bank Account Number.
+        account_owner:
+          type: string
+          description: The name of the account owner.
+    Protected:
+      type: object
+      description: Contains EFDL-specific information that should never be changed by external services.
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp indicating the protected instance creation time.
+        hash:
+          type: string
+          description: Hash to validate the integrity of the data.
+        relations:
+          type: object
+          description: >
+            Map of relations and their unique identifiers. 
+            This is used to keep track of related entities within the system.
+          additionalProperties:
+            type: string
+        origin:
+          $ref: "#/components/schemas/Origin"
+    Origin:
+      type: object
+      description: Information about the service and type that created the model.
+      properties:
+        service_type:
+          type: string
+          description: Type of the service.
+        service_identifier:
+          type: string
+          description: Unique identifier of the service.
+    Custom:
+      type: object
+      description: Contains EFDL-agnostic information that can be populated and passed to further destinations.
+      properties:
+        data:
+          $ref: "#/components/schemas/Data"
+        relations:
+          $ref: "#/components/schemas/Relations"
+    Data:
+      type: object
+      description: Contains data for a model, which does not directly conform to the model’s fields. It should not be relied upon as it is not strictly defined and may carry data relevant to the service implementing it.
+      additionalProperties:
+        type: string
+    Relations:
+      type: object
+      description: Contains relational mapping of the model's identifier to specific services through their service type and identifier coalesced together via a colon i.e. "type:identifier".
+      additionalProperties:
+        type: string
+    Base:
+      type: object
+      description: >
+        Base schema containing common properties shared across multiple entity representations.
+        This includes unique identifiers, creation and modification dates, protected data, and custom data.
+      properties:
+        identifier:
+          type: string
+          description: Unique identifier for the model.
+        date_created:
+          type: string
+          format: date-time
+          description: Date when the model was created.
+        date_modified:
+          type: string
+          format: date-time
+          description: Date when the model was last modified.
+        _protected:
+          $ref: "#/components/schemas/Protected"
+        _custom:
+          $ref: "#/components/schemas/Custom"
+    AccountPerson:
+      nullable: true
+      type: object
+      description: Details specific to personal account types.
+      properties:
+        first_name:
+          type: string
+          description: First name of the account holder.
+        last_name:
+          type: string
+          description: Last name of the account holder.
+        birth_date:
+          type: string
+          format: date-time
+          description: Birth date of the account holder.
+    AccountBusiness:
+      nullable: true
+      type: object
+      description: Details specific to business account types.
+      properties:
+        name:
+          type: string
+          description: Name of the business account.
+    AccountBilling:
+      nullable: true
+      type: object
+      description: Billing information for an account.
+      properties:
+        sepa:
+          $ref: "#/components/schemas/PaymentMethodSepa"
+    Account:
+      allOf:
+        - $ref: "#/components/schemas/Base"
+        - type: object
+          properties:
+            type:
+              type: string
+              description: Type of the account.
+              enum: [person, agent, business]
+            person:
+              $ref: "#/components/schemas/AccountPerson"
+            business:
+              $ref: "#/components/schemas/AccountBusiness"
+            address:
+              $ref: "#/components/schemas/Address"
+            billing:
+              $ref: "#/components/schemas/AccountBilling"
+            email:
+              type: string
+              description: Email address of the account holder.
+            phone:
+              type: string
+              description: Phone number of the account holder.
+    ContractType:
+      type: string
+      enum: [device, vehicle]
+      description: Enum representing types of contracts.
+    ContractDataConditionState:
+      type: string
+      enum: [new, used, damaged]
+      description: Enum representing different condition states.
+    ContractDataVehicleFuelType:
+      type: string 
+      enum: [electric, gasoline, diesel, hybrid]
+      description: Enum representing vehicle fuel types.
+    ContractDataVehicleCategory:
+      type: string
+      enum: [sedan, coupe, suv, truck]
+      description: Enum representing vehicle categories.
+    ContractDataDeviceCondition:
+      type: object
+      description: Condition details specific to device contracts.
+      properties:
+        state:
+          $ref: '#/components/schemas/ContractDataConditionState'
+        functional:
+          type: boolean
+          description: Is the device still functional.
+    ContractDataDeviceComplianceEU:
+      type: object
+      description: EU compliance details for device contracts.
+      properties:
+        waiver:
+          type: boolean
+          description: Is the device compliant with EU regulations.
+        waiver_date:
+          type: string
+          format: date-time
+          description: The date the waiver was granted.
+        acknowledged:
+          type: boolean
+          description: Has the waiver been acknowledged.
+        acknowledged_date:
+          type: string
+          format: date-time
+          description: The date the waiver was acknowledged.    
+    ContractDataDeviceCompliance:
+      type: object
+      description: Compliance details specific to device contracts.
+      properties:
+        eu:
+          $ref: '#/components/schemas/ContractDataDeviceComplianceEU'
+    ContractDataDeviceIdentification:
+      type: object
+      description: Identification details for device contracts.
+      properties:
+        imei:
+          type: string
+          description: The International Mobile Equipment Identity.
+        name:
+          type: string
+          description: The name of the device.
+        manufacturer:
+          type: string
+          description: The manufacturer of the device.
+    ContractDataDevicePurchase:
+      type: object
+      description: Purchase details specific to device contracts.
+      properties:
+        date:
+          type: string
+          format: date-time
+          description: The date the device was purchased.
+        value:
+          type: integer
+          description: The base value of the device.
+        amount:
+          type: integer
+          description: The amount paid for the device.
+    ContractDataDeviceDetails:
+      type: object
+      description: Additional details specific to device contracts.
+      properties:
+        digital:
+          type: boolean
+          description: Is the device digital.
+    ContractDataDevice:
+      type: object
+      nullable: true
+      description: Details specific to device contracts.
+      properties:
+        condition:
+          $ref: '#/components/schemas/ContractDataDeviceCondition'
+        compliance:
+          $ref: '#/components/schemas/ContractDataDeviceCompliance'
+        details:
+          $ref: '#/components/schemas/ContractDataDeviceDetails'
+        identification:
+          $ref: '#/components/schemas/ContractDataDeviceIdentification'
+        purchase:
+          $ref: '#/components/schemas/ContractDataDevicePurchase'
+    ContractDataVehicleDetails:
+      type: object
+      description: Details specific to vehicle contracts.
+      properties:
+        cylinder:
+          type: integer
+          description: The number of cylinders in the engine.
+        doors:
+          type: integer
+          description: The number of doors on the vehicle.
+        fuel:
+          $ref: '#/components/schemas/ContractDataVehicleFuelType'
+        horsepower:
+          type: integer
+          description: The horsepower of the vehicle.
+        seats:
+          type: integer
+          description: The amount of seats in the vehicle.
+        weight:
+          type: integer
+          description: The empty weight of the vehicle.
+    ContractDataVehicleCondition:
+      type: object
+      description: Condition details specific to vehicle contracts.
+      properties:
+        state:
+          $ref: '#/components/schemas/ContractDataConditionState'
+        mileage:
+          type: integer
+          description: The mileage of the vehicle.
+    ContractDataVehicleIdentification:
+      type: object
+      description: Identification details specific to vehicle contracts.
+      properties:
+        vin:
+          type: string
+          description: The Vehicle Identification Number.
+        hsn:
+          type: string
+          description: The Manufacturer Code Number.
+        tsn:
+          type: string
+          description: The Type Key Number.
+        manufacturer:
+          type: string
+          description: The manufacturer of the vehicle.
+        model:
+          type: string
+          description: The model of the vehicle.
+        year:
+          type: integer
+          description: The year the vehicle was manufactured.
+        category:
+          $ref: '#/components/schemas/ContractDataVehicleCategory'
+        license_plate:
+          type: string
+          description: The license plate of the vehicle.
+        first_registered:
+          type: string
+          format: date-time
+          description: The date the vehicle was first registered.
+        last_registered:
+          type: string
+          format: date-time
+          description: The date the vehicle was registered to the current owner.
+    ContractDataVehicle:
+      type: object
+      nullable: true
+      description: Details specific to vehicle contracts.
+      properties:
+        condition:
+          $ref: '#/components/schemas/ContractDataVehicleCondition'
+        details:
+          $ref: '#/components/schemas/ContractDataVehicleDetails'
+        identification:
+          $ref: '#/components/schemas/ContractDataVehicleIdentification'
+    ContractData:
+      type: object
+      description: Data specific to the contract type.
+      properties:
+        device:
+          $ref: '#/components/schemas/ContractDataDevice'
+        vehicle:
+          $ref: '#/components/schemas/ContractDataVehicle'
+    ContractPayment:
+      type: object
+      description: Payment details for contracts.
+      properties:
+        amount:
+          type: number
+          description: The amount of the payment.
+        premium_monthly:
+          type: number
+          description: The monthly premium of the contract.
+        premium_yearly:
+          type: number
+          description: The yearly premium of the contract.
+        frequency:
+          type: string
+          format: duration
+          description: The frequency of the payment.
+        invoice:
+          type: boolean
+          description: Whether to send an invoice or not.
+        sepa:
+          $ref: '#/components/schemas/PaymentMethodSepa'
+    Contract:
+      allOf:
+        - $ref: '#/components/schemas/Base'
+        - type: object
+          properties:
+            type:
+              $ref: '#/components/schemas/ContractType'
+            account_identifier:
+              type: string
+              description: Identifier of the account associated with the contract.
+            name:
+              type: string
+              description: Name of the contract.
+            description:
+              type: string
+              description: Description of the contract.
+            status:
+              $ref: "#/components/schemas/ClaimContractStatus"
+            data:
+              $ref: '#/components/schemas/ContractData'
+            payment:
+              $ref: '#/components/schemas/ContractPayment'
+            duration:
+              type: string
+              format: duration
+              description: The duration of the contract.
+            termination_flexible:
+              type: boolean
+              description: Is the contract termination flexible.
+            date_start:
+              type: string
+              format: date-time
+              description: Date when the contract starts.
+            date_end:
+              type: string
+              format: date-time
+              description: Date when the contract ends.
+    FinancialTransaction:
+      allOf:
+        - $ref: "#/components/schemas/Base"
+        - type: object
+          description: Represents a generic financial transaction.
+          properties:
+            amount:
+              type: number
+              format: double
+              description: Amount involved in the transaction.
+            currency:
+              type: string
+              description: Currency in which the transaction is made, represented in ISO 4217 format.
+            type:
+              type: string
+              description: Type of the transaction (e.g., credit, debit).
+            status:
+              $ref: "#/components/schemas/TransactionStatus"
+            account_id:
+              type: string
+              description: Identifier of the account associated with the transaction.
+            description:
+              type: string
+              description: A brief description or memo about the transaction.
+    Claim:
+      allOf:
+        - $ref: "#/components/schemas/Base"
+        - type: object
+          description: Represents a generic claim.
+          properties:
+            policy_id:
+              type: string
+              description: Identifier of the policy associated with the claim.
+            date_filed:
+              type: string
+              format: date-time
+              description: Date when the claim was filed.
+            date_of_incident:
+              type: string
+              format: date-time
+              description: Date when the incident occurred.
+            type:
+              type: string
+              description: Type of claim.
+              enum:
+                - theft
+                - accident
+                - damage
+                - health
+                - liability
+                - other
+            status:
+              $ref: "#/components/schemas/ClaimContractStatus"
+            amount_claimed:
+              type: number
+              format: double
+              description: Amount claimed.
+            amount_approved:
+              type: number
+              format: double
+              description: Amount approved by the company, if applicable.
+            description:
+              type: string
+              description: Detailed description of the claim.
+            documents:
+              type: array
+              items:
+                type: string
+                description: List of document URLs or identifiers related to the claim.
+    TransactionStatus:
+      type: string
+      description: The status of a financial transaction.
+      enum:
+        - pending
+        - completed
+        - failed
+    ClaimContractStatus:
+      type: string
+      description: The status of a claim or contract.
+      enum:
+        - pending
+        - open
+        - in-review
+        - approved
+        - rejected
+        - completed
