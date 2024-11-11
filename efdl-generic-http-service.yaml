@@ -1,9 +1,9 @@
 openapi: 3.0.3
 info:
   title: EFDL Generic HTTP Service
-  version: 1.2.5
+  version: 1.2.6
   description: >
-    API for EFDL HTTP Service which pulls and pushes accounts, cases, claims, contracts, and financial transactions.
+    API for EFDL HTTP Service which pulls and pushes accounts, cases, claims, contracts, and policies.
   contact:
     name: Andrew Lake
     email: a.lake@savagescorp.com
@@ -82,7 +82,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-    post:
+    put:
       summary: Upsert Account
       description: Create or update an account.
       operationId: upsertAccount
@@ -180,7 +180,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-    post:
+    put:
       summary: Upsert Claim
       description: Create or update a claim.
       operationId: upsertClaim
@@ -276,7 +276,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-    post:
+    put:
       summary: Upsert Contract
       description: Create or update a contract.
       operationId: upsertContract
@@ -375,7 +375,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-    post:
+    put:
       summary: Upsert Transaction
       description: Create or update a financial transaction.
       operationId: upsertTransaction
@@ -532,6 +532,9 @@ components:
           $ref: "#/components/schemas/Protected"
         _custom:
           $ref: "#/components/schemas/Custom"
+        _deleted:
+          type: boolean
+          description: If set, will cause data to be expunged in downstream systems and during warehousing
     AccountPerson:
       nullable: true
       type: object

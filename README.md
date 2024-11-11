@@ -40,6 +40,8 @@ The primary goals of this API specification are:
 
 - **Data Mapping**: EFDL allows customers to map data fields between different services, ensuring that data is correctly aligned and synchronized in a meaningful way, even across disparate systems.
 
+- **Data Expulsion**: EFDL provides mechanisms to expel data from the system, ensuring compliance with data privacy regulations and organizational policies.
+
 ## API Structure
 
 The API is structured around the following key resources:
@@ -54,22 +56,22 @@ The API is structured around the following key resources:
 ### Accounts
 
 - `GET /accounts`: Retrieve a list of accounts.
-- `POST /accounts`: Upsert (create or update) an account.
+- `PUT /accounts`: Upsert (create or update) an account.
 
 ### Contracts
 
 - `GET /contracts`: Retrieve a list of contracts.
-- `POST /contracts`: Upsert (create or update) a contract.
+- `PUT /contracts`: Upsert (create or update) a contract.
 
 ### Claims
 
 - `GET /claims`: Retrieve a list of claims.
-- `POST /claims`: Upsert (create or update) a claim.
+- `PUT /claims`: Upsert (create or update) a claim.
 
 ### Transactions
 
 - `GET /transactions`: Retrieve a list of financial transactions.
-- `POST /transactions`: Upsert (create or update) a transaction.
+- `PUT /transactions`: Upsert (create or update) a transaction.
 
 ## Error Handling
 
@@ -79,6 +81,10 @@ The API provides detailed error messages and uses standard HTTP status codes to 
 - `201 Created`: Successful creation of a new resource.
 - `400 Bad Request`: Invalid request parameters or data.
 - `500 Internal Server Error`: An unexpected error occurred on the server.
+
+## Deleting / Expunging Data
+
+To remove data from any downstream systems, the API provides a field `_deleted` in the request payload. Setting this field to `true` will mark the corresponding record as deleted in the downstream system. The record will not be physically deleted but will be expunged, having its identifiable information removed during transport and the `_deleted` flag set. This ensures that the record is not accessible in any downstream systems, while still maintaining data integrity as well as a record referencing the original data for audit purposes.
 
 ## Contact
 
