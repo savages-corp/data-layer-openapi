@@ -1,14 +1,20 @@
 openapi: 3.0.3
+
 info:
-  title: EFDL Generic HTTP Service
+  title: Data Layer Generic HTTP Service
   version: 1.2.6
   description: >
-    API for EFDL HTTP Service which pulls and pushes accounts, cases, claims, contracts, and policies.
+    API for Data Layer HTTP Service to synchronize the supported data types across systems.
   contact:
     name: Andrew Lake
     email: a.lake@savagescorp.com
+  license:
+    name: Proprietary
+    url: https://data-layer.com/terms-conditions/
+
 servers:
   - url: https://mock_46065c8968b344568842adfc32f51904.mock.insomnia.rest
+
 tags:
   - name: Accounts
     description: Operations related to accounts.
@@ -18,8 +24,12 @@ tags:
     description: Operations related to contracts.
   - name: Transactions
     description: Operations related to financial transactions.
+
+security:
+  []
+
 paths:
-  /accounts:
+  /v1/accounts:
     get:
       summary: Get Accounts
       description: >
@@ -29,38 +39,11 @@ paths:
       tags:
         - Accounts
       parameters:
-        - name: startDate
-          in: query
-          description: Start date for filtering accounts (RFC 3339 format). Retrieves from the first entry if not specified.
-          required: false
-          schema:
-            type: string
-            format: date-time
-        - name: endDate
-          in: query
-          description: End date for filtering accounts (RFC 3339 format). Retrieves to the latest entry if not specified.
-          required: false
-          schema:
-            type: string
-            format: date-time
-        - name: startId
-          in: query
-          description: Starting integer identifier for pulling accounts. Retrieves from the first entry if not specified.
-          required: false
-          schema:
-            type: integer
-        - name: endId
-          in: query
-          description: Ending integer identifier for pulling accounts. Retrieves to the latest entry if not specified.
-          required: false
-          schema:
-            type: integer
-        - name: limit
-          in: query
-          description: Maximum number of accounts to return.
-          required: false
-          schema:
-            type: integer
+        - $ref: "#/components/parameters/startDateQueryOptional"
+        - $ref: "#/components/parameters/endDateQueryOptional"
+        - $ref: "#/components/parameters/startIdQueryOptional"
+        - $ref: "#/components/parameters/endIdQueryOptional"
+        - $ref: "#/components/parameters/limitQueryOptional"
       responses:
         "200":
           description: Successful retrieval of accounts
@@ -71,17 +54,9 @@ paths:
                 items:
                   $ref: "#/components/schemas/Account"
         "400":
-          description: Failed to retrieve accounts
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/BadRequest"
         "500":
-          description: Unexpected internal server error occurred.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ServerError"
     put:
       summary: Upsert Account
       description: Create or update an account.
@@ -108,18 +83,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/Account"
         "400":
-          description: Failed to upsert account
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/BadRequest"
         "500":
-          description: Unexpected internal server error occurred.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  /claims:
+          $ref: "#/components/responses/ServerError"
+  /v1/claims:
     get:
       summary: Get Claims
       description: Retrieve a list of claims.
@@ -127,38 +94,11 @@ paths:
       tags:
         - Claims
       parameters:
-        - name: startDate
-          in: query
-          description: Start date for filtering claims (RFC 3339 format).
-          required: false
-          schema:
-            type: string
-            format: date-time
-        - name: endDate
-          in: query
-          description: End date for filtering claims (RFC 3339 format).
-          required: false
-          schema:
-            type: string
-            format: date-time
-        - name: startId
-          in: query
-          description: Starting identifier for filtering claims.
-          required: false
-          schema:
-            type: string
-        - name: endId
-          in: query
-          description: Ending identifier for filtering claims.
-          required: false
-          schema:
-            type: string
-        - name: limit
-          in: query
-          description: Maximum number of claims to return.
-          required: false
-          schema:
-            type: integer
+        - $ref: "#/components/parameters/startDateQueryOptional"
+        - $ref: "#/components/parameters/endDateQueryOptional"
+        - $ref: "#/components/parameters/startIdQueryOptional"
+        - $ref: "#/components/parameters/endIdQueryOptional"
+        - $ref: "#/components/parameters/limitQueryOptional"
       responses:
         "200":
           description: Successful retrieval of claims
@@ -169,17 +109,9 @@ paths:
                 items:
                   $ref: "#/components/schemas/Claim"
         "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/BadRequest"
         "500":
-          description: Unexpected internal server error occurred.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ServerError"
     put:
       summary: Upsert Claim
       description: Create or update a claim.
@@ -201,19 +133,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/Claim"
         "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/BadRequest"
         "500":
-          description: Unexpected internal server error occurred.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-                
-  /contracts:
+          $ref: "#/components/responses/ServerError"
+
+  /v1/contracts:
     get:
       summary: Get Contracts
       description: >
@@ -223,38 +147,11 @@ paths:
       tags:
         - Contracts
       parameters:
-        - name: startDate
-          in: query
-          description: Start date for filtering contracts (RFC 3339 format). Retrieves from the first entry if not specified.
-          required: false
-          schema:
-            type: string
-            format: date-time
-        - name: endDate
-          in: query
-          description: End date for filtering contracts (RFC 3339 format). Retrieves to the latest entry if not specified.
-          required: false
-          schema:
-            type: string
-            format: date-time
-        - name: startId
-          in: query
-          description: Starting integer identifier for pulling contracts. Retrieves from the first entry if not specified.
-          required: false
-          schema:
-            type: integer
-        - name: endId
-          in: query
-          description: Ending integer identifier for pulling contracts. Retrieves to the latest entry if not specified.
-          required: false
-          schema:
-            type: integer
-        - name: limit
-          in: query
-          description: Maximum number of contracts to return.
-          required: false
-          schema:
-            type: integer
+        - $ref: "#/components/parameters/startDateQueryOptional"
+        - $ref: "#/components/parameters/endDateQueryOptional"
+        - $ref: "#/components/parameters/startIdQueryOptional"
+        - $ref: "#/components/parameters/endIdQueryOptional"
+        - $ref: "#/components/parameters/limitQueryOptional"
       responses:
         "200":
           description: Successful retrieval of contracts
@@ -265,17 +162,9 @@ paths:
                 items:
                   $ref: "#/components/schemas/Contract"
         "400":
-          description: Failed to retrieve contracts
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/BadRequest"
         "500":
-          description: Unexpected internal server error occurred.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ServerError"
     put:
       summary: Upsert Contract
       description: Create or update a contract.
@@ -302,19 +191,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/Contract"
         "400":
-          description: Failed to upsert contract
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/BadRequest"
         "500":
-          description: Unexpected internal server error occurred.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ServerError"
 
-  /transactions:
+  /v1/transactions:
     get:
       summary: Get Transactions
       description: Retrieve a list of financial transactions.
@@ -322,38 +203,11 @@ paths:
       tags:
         - Transactions
       parameters:
-        - name: startDate
-          in: query
-          description: Start date for filtering transactions (RFC 3339 format).
-          required: false
-          schema:
-            type: string
-            format: date-time
-        - name: endDate
-          in: query
-          description: End date for filtering transactions (RFC 3339 format).
-          required: false
-          schema:
-            type: string
-            format: date-time
-        - name: startId
-          in: query
-          description: Starting identifier for filtering transactions.
-          required: false
-          schema:
-            type: string
-        - name: endId
-          in: query
-          description: Ending identifier for filtering transactions.
-          required: false
-          schema:
-            type: string
-        - name: limit
-          in: query
-          description: Maximum number of transactions to return.
-          required: false
-          schema:
-            type: integer
+        - $ref: "#/components/parameters/startDateQueryOptional"
+        - $ref: "#/components/parameters/endDateQueryOptional"
+        - $ref: "#/components/parameters/startIdQueryOptional"
+        - $ref: "#/components/parameters/endIdQueryOptional"
+        - $ref: "#/components/parameters/limitQueryOptional"
       responses:
         "200":
           description: Successful retrieval of transactions
@@ -364,17 +218,9 @@ paths:
                 items:
                   $ref: "#/components/schemas/FinancialTransaction"
         "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/BadRequest"
         "500":
-          description: Unexpected internal server error occurred.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ServerError"
     put:
       summary: Upsert Transaction
       description: Create or update a financial transaction.
@@ -396,20 +242,54 @@ paths:
               schema:
                 $ref: "#/components/schemas/FinancialTransaction"
         "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/BadRequest"
         "500":
-          description: Unexpected internal server error occurred.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
+          $ref: "#/components/responses/ServerError"
 
 components:
+  parameters:
+    startDateQueryOptional:
+      name: startDate
+      in: query
+      description: Start date for filtering (RFC 3339 format).
+      required: false
+      schema:
+        type: string
+        format: date-time
+
+    endDateQueryOptional:
+      name: endDate
+      in: query
+      description: End date for filtering (RFC 3339 format).
+      required: false
+      schema:
+        type: string
+        format: date-time
+
+    startIdQueryOptional:
+      name: startId
+      in: query
+      description: Starting identifier for filtering.
+      required: false
+      schema:
+        type: string
+
+    endIdQueryOptional:
+      name: endId
+      in: query
+      description: Ending identifier for filtering.
+      required: false
+      schema:
+        type: string
+
+    limitQueryOptional:
+      name: limit
+      in: query
+      description: Maximum number of items to return.
+      required: false
+      schema:
+        type: integer
+
   schemas:
     Error:
       type: object
@@ -418,6 +298,7 @@ components:
         message:
           type: string
           description: Reason for the error
+
     Address:
       nullable: true
       type: object
@@ -447,6 +328,7 @@ components:
           nullable: true
           type: string
           description: Country
+
     PaymentMethodSepa:
       type: object
       description: SEPA payment details.
@@ -463,9 +345,10 @@ components:
         account_owner:
           type: string
           description: The name of the account owner.
+
     Protected:
       type: object
-      description: Contains EFDL-specific information that should never be changed by external services.
+      description: Contains Data Layer-specific information that should never be changed by external services.
       properties:
         timestamp:
           type: string
@@ -483,6 +366,7 @@ components:
             type: string
         origin:
           $ref: "#/components/schemas/Origin"
+
     Origin:
       type: object
       description: Information about the service and type that created the model.
@@ -493,24 +377,28 @@ components:
         service_identifier:
           type: string
           description: Unique identifier of the service.
+
     Custom:
       type: object
-      description: Contains EFDL-agnostic information that can be populated and passed to further destinations.
+      description: Contains Data Layer-agnostic information that can be populated and passed to further destinations.
       properties:
         data:
           $ref: "#/components/schemas/Data"
         relations:
           $ref: "#/components/schemas/Relations"
+
     Data:
       type: object
       description: Contains data for a model, which does not directly conform to the model’s fields. It should not be relied upon as it is not strictly defined and may carry data relevant to the service implementing it.
       additionalProperties:
         type: string
+
     Relations:
       type: object
       description: Contains relational mapping of the model's identifier to specific services through their service type and identifier coalesced together via a colon i.e. "type:identifier".
       additionalProperties:
         type: string
+
     Base:
       type: object
       description: >
@@ -535,6 +423,7 @@ components:
         _deleted:
           type: boolean
           description: If set, will cause data to be expunged in downstream systems and during warehousing
+
     AccountPerson:
       nullable: true
       type: object
@@ -550,6 +439,7 @@ components:
           type: string
           format: date-time
           description: Birth date of the account holder.
+
     AccountBusiness:
       nullable: true
       type: object
@@ -558,6 +448,7 @@ components:
         name:
           type: string
           description: Name of the business account.
+
     AccountBilling:
       nullable: true
       type: object
@@ -565,6 +456,7 @@ components:
       properties:
         sepa:
           $ref: "#/components/schemas/PaymentMethodSepa"
+
     Account:
       allOf:
         - $ref: "#/components/schemas/Base"
@@ -573,7 +465,7 @@ components:
             type:
               type: string
               description: Type of the account.
-              enum: [person, agent, business]
+              enum: [ person, agent, business ]
             person:
               $ref: "#/components/schemas/AccountPerson"
             business:
@@ -588,22 +480,27 @@ components:
             phone:
               type: string
               description: Phone number of the account holder.
+
     ContractType:
       type: string
-      enum: [device, vehicle]
+      enum: [ device, vehicle ]
       description: Enum representing types of contracts.
+
     ContractDataConditionState:
       type: string
-      enum: [new, used, damaged]
+      enum: [ new, used, damaged ]
       description: Enum representing different condition states.
+
     ContractDataVehicleFuelType:
-      type: string 
-      enum: [electric, gasoline, diesel, hybrid]
+      type: string
+      enum: [ electric, gasoline, diesel, hybrid ]
       description: Enum representing vehicle fuel types.
+
     ContractDataVehicleCategory:
       type: string
-      enum: [sedan, coupe, suv, truck]
+      enum: [ sedan, coupe, suv, truck ]
       description: Enum representing vehicle categories.
+
     ContractDataDeviceCondition:
       type: object
       description: Condition details specific to device contracts.
@@ -613,6 +510,7 @@ components:
         functional:
           type: boolean
           description: Is the device still functional.
+
     ContractDataDeviceComplianceEU:
       type: object
       description: EU compliance details for device contracts.
@@ -630,13 +528,15 @@ components:
         acknowledged_date:
           type: string
           format: date-time
-          description: The date the waiver was acknowledged.    
+          description: The date the waiver was acknowledged.
+
     ContractDataDeviceCompliance:
       type: object
       description: Compliance details specific to device contracts.
       properties:
         eu:
           $ref: '#/components/schemas/ContractDataDeviceComplianceEU'
+
     ContractDataDeviceIdentification:
       type: object
       description: Identification details for device contracts.
@@ -650,6 +550,7 @@ components:
         manufacturer:
           type: string
           description: The manufacturer of the device.
+
     ContractDataDevicePurchase:
       type: object
       description: Purchase details specific to device contracts.
@@ -664,6 +565,7 @@ components:
         amount:
           type: integer
           description: The amount paid for the device.
+
     ContractDataDeviceDetails:
       type: object
       description: Additional details specific to device contracts.
@@ -671,6 +573,7 @@ components:
         digital:
           type: boolean
           description: Is the device digital.
+
     ContractDataDevice:
       type: object
       nullable: true
@@ -686,6 +589,7 @@ components:
           $ref: '#/components/schemas/ContractDataDeviceIdentification'
         purchase:
           $ref: '#/components/schemas/ContractDataDevicePurchase'
+
     ContractDataVehicleDetails:
       type: object
       description: Details specific to vehicle contracts.
@@ -707,6 +611,7 @@ components:
         weight:
           type: integer
           description: The empty weight of the vehicle.
+
     ContractDataVehicleCondition:
       type: object
       description: Condition details specific to vehicle contracts.
@@ -716,6 +621,7 @@ components:
         mileage:
           type: integer
           description: The mileage of the vehicle.
+
     ContractDataVehicleIdentification:
       type: object
       description: Identification details specific to vehicle contracts.
@@ -751,6 +657,7 @@ components:
           type: string
           format: date-time
           description: The date the vehicle was registered to the current owner.
+
     ContractDataVehicle:
       type: object
       nullable: true
@@ -762,6 +669,7 @@ components:
           $ref: '#/components/schemas/ContractDataVehicleDetails'
         identification:
           $ref: '#/components/schemas/ContractDataVehicleIdentification'
+
     ContractData:
       type: object
       description: Data specific to the contract type.
@@ -770,6 +678,7 @@ components:
           $ref: '#/components/schemas/ContractDataDevice'
         vehicle:
           $ref: '#/components/schemas/ContractDataVehicle'
+
     ContractPayment:
       type: object
       description: Payment details for contracts.
@@ -792,6 +701,7 @@ components:
           description: Whether to send an invoice or not.
         sepa:
           $ref: '#/components/schemas/PaymentMethodSepa'
+
     Contract:
       allOf:
         - $ref: '#/components/schemas/Base'
@@ -829,6 +739,7 @@ components:
               type: string
               format: date-time
               description: Date when the contract ends.
+
     FinancialTransaction:
       allOf:
         - $ref: "#/components/schemas/Base"
@@ -853,6 +764,7 @@ components:
             description:
               type: string
               description: A brief description or memo about the transaction.
+
     Claim:
       allOf:
         - $ref: "#/components/schemas/Base"
@@ -898,6 +810,7 @@ components:
               items:
                 type: string
                 description: List of document URLs or identifiers related to the claim.
+
     TransactionStatus:
       type: string
       description: The status of a financial transaction.
@@ -905,6 +818,7 @@ components:
         - pending
         - completed
         - failed
+
     ClaimContractStatus:
       type: string
       description: The status of a claim or contract.
@@ -915,3 +829,17 @@ components:
         - approved
         - rejected
         - completed
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    ServerError:
+      description: Unexpected internal server error occurred.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
