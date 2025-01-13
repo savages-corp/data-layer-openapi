@@ -1,22 +1,24 @@
-# European Financial Data Layer (EFDL) OpenAPI
+# Data Layer OpenAPI Specification
 
-EFDL acts as an intermediary data layer that facilitates the pulling and pushing of data between different sources and destinations, such as CRM systems like Salesforce and HubSpot, as well as custom internal systems.
+https://data-layer.com
 
-The core concepts of EFDL are:
+Data Layer acts as an intermediary data layer that facilitates the pulling and pushing of data between different sources and destinations, such as CRM systems like Salesforce and HubSpot, as well as custom internal systems.
 
-- **Deterministic Data Flow**: EFDL ensures that data flows in a deterministic manner, maintaining consistency and integrity across different systems.
+The core concepts of Data Layer are:
 
-- **Error Handling**: EFDL halts data flow in case of errors, ensuring that data is not lost or corrupted during synchronization.
+- **Deterministic Data Flow**: Data Layer ensures that data flows in a deterministic manner, maintaining consistency and integrity across different systems.
 
-- **Data Normalization**: EFDL comes with predefined data models that represent common entities such as accounts, contracts, claims, and financial transactions.
+- **Error Handling**: Data Layer halts data flow in case of errors, ensuring that data is not lost or corrupted during synchronization.
 
-- **Data Warehouse**: EFDL has the capability to store normalized data in a data warehouse layer, creating a single source of truth for data across different systems.
+- **Data Normalization**: Data Layer comes with predefined data models that represent common entities such as accounts, contracts, claims, and financial transactions.
 
-- **Connectors**: EFDL provides pre-built connectors to popular services, allowing customers to easily integrate various systems.
+- **Data Warehouse**: Data Layer has the capability to store normalized data in a data warehouse layer, creating a single source of truth for data across different systems.
 
-A service in EFDL is a logical entity that represents a data source or destination. Services can be external systems like Salesforce or internal systems like a custom CRM. A service provides pulling and pushing capabilities for data, allowing EFDL to synchronize data between different services seamlessly.
+- **Connectors**: Data Layer provides pre-built connectors to popular services, allowing customers to easily integrate various systems.
 
-The **EFDL Generic HTTP Service** is a crucial component of the EFDL system, designed to allow customers and integration partners to set up their own HTTP servers that EFDL can connect to. This enables data exchange between EFDL and internal systems, providing a flexible and customizable solution for data synchronization.
+A service in Data Layer is a logical entity that represents a data source or destination. Services can be external systems like Salesforce or internal systems like a custom CRM. A service provides pulling and pushing capabilities for data, allowing Data Layer to synchronize data between different services seamlessly.
+
+The **Data Layer Generic HTTP Service** is a crucial component of the Data Layer system, designed to allow customers and integration partners to set up their own HTTP servers that Data Layer can connect to. This enables data exchange between Data Layer and internal systems, providing a flexible and customizable solution for data synchronization at scale.
 
 ## Goals
 
@@ -28,19 +30,19 @@ The primary goals of this API specification are:
 
 3. **Scalability**: Support large-scale data operations for enterprise environments, ensuring efficient handling of data migrations, integrations, and analytics.
 
-4. **Customization**: Allow customers to set up their own HTTP servers using this specification, offering granular control over data exposure and integration with EFDL.
+4. **Customization**: Allow customers to set up their own HTTP servers using this specification, offering granular control over data exposure and integration with Data Layer.
 
 ## Key Features
 
-- **Service Integration**: EFDL provides basic implementations for popular services such as Salesforce. It also supports custom integrations for unique customer environments.
+- **Service Integration**: Data Layer provides basic implementations for popular services such as Salesforce. It also supports custom integrations for unique customer environments.
 
-- **Generic HTTP Service**: This specification enables customers with internal systems to set up HTTP endpoints that EFDL can connect to, facilitating data exchange.
+- **Generic HTTP Service**: This specification enables customers with internal systems to set up HTTP endpoints that Data Layer can connect to, facilitating data exchange.
 
-- **Data Translation**: As data is retrieved from one service and sent to another, EFDL translates data formats to ensure compatibility and integrity.
+- **Data Translation**: As data is retrieved from one service and sent to another, Data Layer translates data formats to ensure compatibility and integrity.
 
-- **Data Mapping**: EFDL allows customers to map data fields between different services, ensuring that data is correctly aligned and synchronized in a meaningful way, even across disparate systems.
+- **Data Mapping**: Data Layer allows customers to map data fields between different services, ensuring that data is correctly aligned and synchronized in a meaningful way, even across disparate systems.
 
-- **Data Expulsion**: EFDL provides mechanisms to expel data from the system, ensuring compliance with data privacy regulations and organizational policies.
+- **Data Expulsion**: Data Layer provides mechanisms to expel data from the system, ensuring compliance with data privacy regulations and organizational policies.
 
 ## API Structure
 
@@ -92,6 +94,16 @@ For more information or support, please contact:
 
 - **Name**: Andrew Lake
 - **Email**: <a.lake@savagescorp.com>
+
+
+- **Name**: Robert Konarskis
+- **Email**: <rk@savagescorp.com>
+
+## Validate the Specification
+
+```
+npx @redocly/cli lint ./openapi.yaml --extends recommended-strict
+```
 
 ---
 
