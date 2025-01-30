@@ -420,9 +420,9 @@ components:
           $ref: "#/components/schemas/Protected"
         _custom:
           $ref: "#/components/schemas/Custom"
-        _deleted:
+        _expunged:
           type: boolean
-          description: If set, will cause data to be expunged in downstream systems and during warehousing
+          description: If set, will cause data to be expunged in downstream systems and during warehousing.
 
     AccountPerson:
       nullable: true

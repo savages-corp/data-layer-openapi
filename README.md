@@ -1,6 +1,6 @@
 # Data Layer OpenAPI Specification
 
-https://data-layer.com
+<https://data-layer.com>
 
 Data Layer acts as an intermediary data layer that facilitates the pulling and pushing of data between different sources and destinations, such as CRM systems like Salesforce and HubSpot, as well as custom internal systems.
 
@@ -86,7 +86,7 @@ The API provides detailed error messages and uses standard HTTP status codes to 
 
 ## Deleting / Expunging Data
 
-To remove data from any downstream systems, the API provides a field `_deleted` in the request payload. Setting this field to `true` will mark the corresponding record as deleted in the downstream system. The record will not be physically deleted but will be expunged, having its identifiable information removed during transport and the `_deleted` flag set. This ensures that the record is not accessible in any downstream systems, while still maintaining data integrity as well as a record referencing the original data for audit purposes.
+To remove data from any downstream systems, the API provides a field `_expunged` in the request payload. Setting this field to `true` will mark the corresponding record as expunged and deleted (depending on the integration implementation) in the downstream system. The record will not be physically deleted but will be expunged, having its identifiable information removed during transport and the `_expunged` flag set. This ensures that the record's data is not accessible in any downstream systems, while still maintaining data integrity as well as a record referencing the original data for audit purposes.
 
 ## Contact
 
@@ -94,7 +94,6 @@ For more information or support, please contact:
 
 - **Name**: Andrew Lake
 - **Email**: <a.lake@savagescorp.com>
-
 
 - **Name**: Robert Konarskis
 - **Email**: <rk@savagescorp.com>
