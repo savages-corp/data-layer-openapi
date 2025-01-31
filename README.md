@@ -84,9 +84,9 @@ The API provides detailed error messages and uses standard HTTP status codes to 
 - `400 Bad Request`: Invalid request parameters or data.
 - `500 Internal Server Error`: An unexpected error occurred on the server.
 
-## Deleting / Expunging Data
+## Anonymizing / Expunging Data
 
-To remove data from any downstream systems, the API provides a field `_expunged` in the request payload. Setting this field to `true` will mark the corresponding record as expunged and deleted (depending on the integration implementation) in the downstream system. The record will not be physically deleted but will be expunged, having its identifiable information removed during transport and the `_expunged` flag set. This ensures that the record's data is not accessible in any downstream systems, while still maintaining data integrity as well as a record referencing the original data for audit purposes.
+To remove data from any downstream systems, the API provides the `_anonymized` and `_expunged` fields in the request payload. Setting these field to `true` will mark the corresponding record as anonymized or expunged for transport into downstream systems and optionally the data warehouse. Both variations will cause the record to not be physically deleted. Depending on the flag, either personally identifiable information (PII) is removed (anonymized) or all data except for data identifiers is cleared (expunged). This ensures that the record's data is not accessible in any downstream systems, while still maintaining data integrity as well as a record referencing the original data for audit purposes.
 
 ## Contact
 
