@@ -420,6 +420,9 @@ components:
           $ref: "#/components/schemas/Protected"
         _custom:
           $ref: "#/components/schemas/Custom"
+        _anonyimized:
+          type: boolean
+          description: If set, will cause data to be anonymized in downstream systems and during warehousing.
         _expunged:
           type: boolean
           description: If set, will cause data to be expunged in downstream systems and during warehousing.
