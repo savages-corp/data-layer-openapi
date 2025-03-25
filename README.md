@@ -1,5 +1,7 @@
 # Data Layer OpenAPI Specification
 
+[![Lint OpenAPI](https://github.com/savages-corp/data-layer-openapi/actions/workflows/lint-openapi.yml/badge.svg)](https://github.com/savages-corp/data-layer-openapi/actions/workflows/lint-openapi.yml)
+
 <https://data-layer.com>
 
 Data Layer acts as an intermediary data layer that facilitates the pulling and pushing of data between different sources and destinations, such as CRM systems like Salesforce and HubSpot, as well as custom internal systems.
