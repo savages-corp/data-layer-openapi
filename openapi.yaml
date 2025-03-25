@@ -2,7 +2,7 @@ openapi: 3.0.3
 
 info:
   title: Data Layer Generic HTTP Service
-  version: 1.2.6
+  version: 1.3.0
   description: >
     API for Data Layer HTTP Service to synchronize the supported data types across systems.
   contact:
@@ -18,6 +18,8 @@ servers:
 tags:
   - name: Accounts
     description: Operations related to accounts.
+  - name: Appraisals
+    description: Operations related to appraisals.
   - name: Claims
     description: Operations related to claims.
   - name: Contracts
@@ -86,6 +88,58 @@ paths:
           $ref: "#/components/responses/BadRequest"
         "500":
           $ref: "#/components/responses/ServerError"
+          
+  /v1/appraisals:
+    get:
+      summary: Get Appraisals
+      description: Retrieve a list of appraisals.
+      operationId: getAppraisals
+      tags:
+        - Appraisals
+      parameters:
+        - $ref: "#/components/parameters/startDateQueryOptional"
+        - $ref: "#/components/parameters/endDateQueryOptional"
+        - $ref: "#/components/parameters/startIdQueryOptional"
+        - $ref: "#/components/parameters/endIdQueryOptional"
+        - $ref: "#/components/parameters/limitQueryOptional"
+      responses:
+        "200":
+          description: Successful retrieval of appraisals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Appraisal"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/ServerError"
+    put:
+      summary: Upsert Appraisal
+      description: Create or update an appraisal.
+      operationId: upsertAppraisal
+      tags:
+        - Appraisals
+      requestBody:
+        description: Appraisal to be created or updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Appraisal"
+      responses:
+        "200":
+          description: Appraisal successfully created or updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appraisal"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/ServerError"
+          
   /v1/claims:
     get:
       summary: Get Claims
@@ -768,6 +822,48 @@ components:
               type: string
               description: A brief description or memo about the transaction.
 
+    Appraisal:
+      allOf:
+        - $ref: "#/components/schemas/Base"
+        - type: object
+          description: Represents an appraisal related to a claim.
+          properties:
+            claim_id:
+              type: string
+              description: Identifier of the claim this appraisal is associated with.
+            appraiser:
+              type: string
+              description: Name or identifier of the appraiser.
+            date:
+              type: string
+              format: date-time
+              description: Date when the appraisal was conducted.
+            type:
+              type: string
+              description: Type of appraisal.
+              enum:
+                - damage_assessment
+                - value_estimation
+                - other
+            summary:
+              type: string
+              description: Summary of the appraisal findings.
+            detailed_report:
+              type: string
+              description: URL or identifier of the detailed appraisal report.
+            amount:
+              type: number
+              format: double
+              description: Monetary value estimated by the appraisal.
+            status:
+              type: string
+              description: Current status of the appraisal.
+              enum:
+                - pending
+                - completed
+                - disputed
+                - reviewed
+
     Claim:
       allOf:
         - $ref: "#/components/schemas/Base"
@@ -796,15 +892,23 @@ components:
                 - liability
                 - other
             status:
-              $ref: "#/components/schemas/ClaimContractStatus"
+              type: string
+              description: Current status of the claim.
+              enum:
+                - pending
+                - open
+                - in-review
+                - approved
+                - rejected
+                - completed
             amount_claimed:
               type: number
               format: double
-              description: Amount claimed.
+              description: Total amount claimed by the policyholder.
             amount_approved:
               type: number
               format: double
-              description: Amount approved by the company, if applicable.
+              description: Amount approved by the insurer.
             description:
               type: string
               description: Detailed description of the claim.
@@ -812,7 +916,12 @@ components:
               type: array
               items:
                 type: string
-                description: List of document URLs or identifiers related to the claim.
+                description: URLs or identifiers of documents related to the claim.
+            appraisal_ids:
+              type: array
+              items:
+                type: string
+                description: List of appraisals associated with the claim.
 
     TransactionStatus:
       type: string
