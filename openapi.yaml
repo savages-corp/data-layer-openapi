@@ -2,7 +2,7 @@ openapi: 3.0.3
 
 info:
   title: Data Layer Generic HTTP Service
-  version: 1.3.0
+  version: 1.3.1
   description: >
     API for Data Layer HTTP Service to synchronize the supported data types across systems.
   contact:
