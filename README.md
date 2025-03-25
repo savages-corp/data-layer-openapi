@@ -49,8 +49,9 @@ The primary goals of this API specification are:
 The API is structured around the following key resources:
 
 - **Accounts**: Manage personal and business accounts, including contact and billing information.
-- **Contracts**: Handle contracts for devices and vehicles, with details on compliance, identification, and payment.
+- **Appraisals**: Handle appraisals for insurance, lending, and tax purposes.
 - **Claims**: Process insurance claims, tracking details from filing to resolution.
+- **Contracts**: Handle contracts for devices and vehicles, with details on compliance, identification, and payment.
 - **Financial Transactions**: Record and retrieve financial transactions related to accounts.
 
 ## Endpoints
@@ -60,15 +61,20 @@ The API is structured around the following key resources:
 - `GET /accounts`: Retrieve a list of accounts.
 - `PUT /accounts`: Upsert (create or update) an account.
 
-### Contracts
+### Appraisals
 
-- `GET /contracts`: Retrieve a list of contracts.
-- `PUT /contracts`: Upsert (create or update) a contract.
+- `GET /appraisals`: Retrieve a list of appraisals.
+- `PUT /appraisals`: Upsert (create or update) an appraisal.
 
 ### Claims
 
 - `GET /claims`: Retrieve a list of claims.
 - `PUT /claims`: Upsert (create or update) a claim.
+
+### Contracts
+
+- `GET /contracts`: Retrieve a list of contracts.
+- `PUT /contracts`: Upsert (create or update) a contract.
 
 ### Transactions
 
