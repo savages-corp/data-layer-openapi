@@ -618,10 +618,10 @@ components:
           description: The date the device was purchased.
         value:
           type: integer
-          description: The base value of the device.
+          description: The base value of the device in cents.
         amount:
           type: integer
-          description: The amount paid for the device.
+          description: The amount in cents paid for the device.
 
     ContractDataDeviceDetails:
       type: object
@@ -742,13 +742,18 @@ components:
       properties:
         amount:
           type: number
-          description: The amount of the payment.
+          format: integer
+          description: The amount of the payment in cents.
         premium_monthly:
           type: number
-          description: The monthly premium of the contract.
+          format: integer
+          minimum: 0
+          description: The monthly premium of the contract in cents.
         premium_yearly:
           type: number
-          description: The yearly premium of the contract.
+          format: integer
+          minimum: 0
+          description: The yearly premium of the contract in cents.
         frequency:
           type: string
           format: duration
@@ -805,8 +810,8 @@ components:
           properties:
             amount:
               type: number
-              format: double
-              description: Amount involved in the transaction.
+              format: integer
+              description: Amount involved in the transaction in cents.
             currency:
               type: string
               description: Currency in which the transaction is made, represented in ISO 4217 format.
@@ -853,8 +858,9 @@ components:
               description: URL or identifier of the detailed appraisal report.
             amount:
               type: number
-              format: double
-              description: Monetary value estimated by the appraisal.
+              format: integer
+              minimum: 0
+              description: Monetary value estimated by the appraisal in cents.
             status:
               type: string
               description: Current status of the appraisal.
@@ -903,20 +909,22 @@ components:
                 - completed
             amount_claimed:
               type: number
-              format: double
-              description: Total amount claimed by the policyholder.
+              format: integer
+              minimum: 0
+              description: Total amount in cents claimed by the policyholder.
             amount_approved:
               type: number
-              format: double
-              description: Amount approved by the insurer.
+              format: integer
+              minimum: 0
+              description: Amount in cents approved by the insurer.
             description:
               type: string
               description: Detailed description of the claim.
-            documents:
+            document_urls:
               type: array
               items:
                 type: string
-                description: URLs or identifiers of documents related to the claim.
+                description: URLs of documents related to the claim.
             appraisal_ids:
               type: array
               items:
